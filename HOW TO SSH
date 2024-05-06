@@ -1,0 +1,55 @@
+Certainly! Here are the steps to host a simple static web page on an EC2 instance with Ubuntu OS:
+
+1. **Launch an EC2 Instance**:
+   - Go to the AWS Management Console and navigate to the EC2 dashboard.
+   - Click on "Launch Instance" and select an Ubuntu Server AMI.
+   - Choose an instance type, configure instance details, add storage, and configure security groups (allow HTTP port 80 access).
+   - Launch the instance and select an existing key pair or create a new one to connect to the instance securely.
+
+2. **Connect to Your EC2 Instance**:
+   - Once the instance is running, note down its public IP address.
+   - Use SSH to connect to the instance from your local terminal:
+     ```
+     ssh -i your-key.pem ubuntu@your-instance-public-ip
+     ```
+   Replace `your-key.pem` with the path to your private key file and `your-instance-public-ip` with the public IP address of your EC2 instance.
+
+3. **Install Required Software**:
+   - Update the package list:
+     ```
+     sudo apt update
+     ```
+   - Install a web server like Nginx:
+     ```
+     sudo apt install nginx
+     ```
+
+4. **Configure Nginx**:
+   - After installation, Nginx will start automatically. You can verify its status with:
+     ```
+     sudo systemctl status nginx
+     ```
+   - By default, Nginx serves files from `/var/www/html` directory. You can place your HTML files here.
+   - You might need to adjust the file permissions:
+     ```
+     sudo chown -R www-data:www-data /var/www/html
+     ```
+   - Optionally, you can configure a domain name with Nginx. Edit the default server block configuration:
+     ```
+     sudo nano /etc/nginx/sites-available/default
+     ```
+     Update the `server_name` directive with your domain name.
+
+5. **Upload Your HTML File**:
+   - Use SCP or SFTP to upload your HTML file to the `/var/www/html` directory on your EC2 instance.
+
+6. **Restart Nginx**:
+   - After uploading your HTML file, restart Nginx to apply changes:
+     ```
+     sudo systemctl restart nginx
+     ```
+
+7. **Access Your Website**:
+   - Open a web browser and enter your EC2 instance's public IP address or domain name. You should see your hosted web page.
+
+That's it! Your static web page is now hosted on an EC2 instance running Ubuntu OS with Nginx as the web server.
